@@ -25,14 +25,20 @@ const LayoutBuilder = () => {
     };
 
     const addColumn = () => {
-        const newColumn = { groupName: `Column-${taskList.length + 1}`, tasks: [] };
+        const newColumn = { 
+            groupName: `Seccion-${taskList.length + 1}`, 
+            tasks: [] 
+        };
         setTasks([...taskList, newColumn]);
     };
 
     const addTask = (groupName, component) => {
         const newTaskList = taskList.map(column => {
             if (column.groupName === groupName) {
-                const newTask = { id: `${groupName}-${column.tasks.length + 1}`, title: `Task ${column.tasks.length + 1}`, ...component };
+                const newTask = { 
+                    id: `${groupName}-${column.tasks.length + 1}`, 
+                    title: `Bloque ${column.tasks.length + 1}`, ...component 
+                };
                 return { ...column, tasks: [...column.tasks, newTask] };
             }
             return column;
@@ -79,8 +85,8 @@ const LayoutBuilder = () => {
 
     return (
         <div>
-            <h1>Layout Builder for {pageName}</h1>
-            <button onClick={addColumn}>Add Column</button>
+            <h1>Layout Builder de {pageName}</h1>
+            <button onClick={addColumn}>Agregar Seccion</button>
             <DragDropContext onDragEnd={onDragEnd}>
                 {taskList.map((column, index) => (
                     <Column
@@ -95,7 +101,7 @@ const LayoutBuilder = () => {
                     />
                 ))}
             </DragDropContext>
-            <button onClick={handleSave}>Save</button>
+            <button onClick={handleSave}>Guardar</button>
         </div>
     );
 };

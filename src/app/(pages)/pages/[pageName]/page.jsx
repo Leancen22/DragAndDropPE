@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
 import Text from '@/components/Text';
+import ComponentIntro from '@/components/ComponentIntro';
+import ComponentAccesosRapidos from '@/components/ComponentAccesosRapidos';
 
 const DynamicPage = () => {
     const { pageName } = useParams();
@@ -35,6 +37,14 @@ const DynamicPage = () => {
                         ))}
                     </ul>
                 );
+            case 'Introduccion':
+                return (
+                    <ComponentIntro title={task.data.title} text={task.data.text} img={task.data.url} />
+                )
+            case 'Bloques':
+                return (
+                    <ComponentAccesosRapidos info={task.data} />
+                )
             default:
                 return null;
         }
@@ -42,7 +52,7 @@ const DynamicPage = () => {
 
     return (
         <div>
-            <h1>Page: {pageName}</h1>
+            <h1>Pagina: {pageName}</h1>
             {taskList.map((column, columnIndex) => (
                 <div key={columnIndex}>
                     <h2>{column.groupName}</h2>

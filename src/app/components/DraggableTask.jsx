@@ -20,6 +20,18 @@ const DraggableTask = ({ task, index, removeTask, openEditModal }) => {
                         </div>
                     </>
                 );
+            case 'Introduccion':
+                    return (
+                        <>
+                            <p>Introduccion creada</p>
+                        </>
+                    );
+            case 'Bloques':
+                return (
+                    <>
+                        <p>Bloques creados</p>
+                    </>
+                );
             default:
                 return null;
         }

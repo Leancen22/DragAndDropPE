@@ -10,7 +10,7 @@ const CreatePage = () => {
 
     const handleCreate = () => {
         if (!pageName.trim()) {
-            alert('Page name is required');
+            alert('Nombre de pagina requerido');
             return;
         }
 
@@ -29,14 +29,14 @@ const CreatePage = () => {
 
     return (
         <div>
-            <h1>Create New Page</h1>
+            <h1>Crear nueva pagina</h1>
             <input
                 type="text"
                 value={pageName}
                 onChange={(e) => setPageName(e.target.value)}
                 placeholder="Enter page name"
             />
-            <button onClick={handleCreate}>Create and Go to Builder</button>
+            <button onClick={handleCreate}>Crear e ir al layout</button>
         </div>
     );
 };

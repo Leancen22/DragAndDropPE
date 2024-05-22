@@ -38,7 +38,7 @@ const Column = ({ droppableId, tasks, type, addTask, removeTask, removeColumn, e
                 {(provided) => (
                     <div {...provided.droppableProps} ref={provided.innerRef} style={style}>
                         <h2>{droppableId}</h2>
-                        <button onClick={() => removeColumn(droppableId)} style={{ marginLeft: '10px', padding: '4px 8px', background: 'red', color: 'white', border: 'none', borderRadius: '4px' }}>Delete Column</button>
+                        <button onClick={() => removeColumn(droppableId)} style={{ marginLeft: '10px', padding: '4px 8px', background: 'red', color: 'white', border: 'none', borderRadius: '4px' }}>Borrar Seccion</button>
                         {tasks.map((task, index) => (
                             <DraggableTask
                                 key={task.id}
@@ -49,7 +49,7 @@ const Column = ({ droppableId, tasks, type, addTask, removeTask, removeColumn, e
                             />
                         ))}
                         {provided.placeholder}
-                        <button onClick={() => setIsModalOpen(true)}>Add Task</button>
+                        <button onClick={() => setIsModalOpen(true)}>Agregar bloque</button>
                     </div>
                 )}
             </StrictModeDroppable>

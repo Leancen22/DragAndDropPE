@@ -4,6 +4,7 @@ const ComponentSelector = ({ isOpen, onClose, onSave, taskToEdit }) => {
     const [componentType, setComponentType] = useState('');
     const [componentData, setComponentData] = useState({});
     const [menuLinks, setMenuLinks] = useState([{ name: '', url: '' }]);
+    const [quickAccessItems, setQuickAccessItems] = useState([{ title: '', link: '' }]);
 
     useEffect(() => {
         if (taskToEdit) {
@@ -11,6 +12,8 @@ const ComponentSelector = ({ isOpen, onClose, onSave, taskToEdit }) => {
             setComponentData(taskToEdit.data);
             if (taskToEdit.type === 'Menu') {
                 setMenuLinks(taskToEdit.data.links);
+            } else if(taskToEdit.type === 'Bloques') {
+                setQuickAccessItems(taskToEdit.data.items);
             }
         }
     }, [taskToEdit]);
@@ -18,7 +21,9 @@ const ComponentSelector = ({ isOpen, onClose, onSave, taskToEdit }) => {
     const handleSave = () => {
         if (componentType === 'Menu') {
             onSave({ type: componentType, data: { links: menuLinks } });
-        } else {
+        } else if (componentType === 'Bloques') {
+            onSave({ type: componentType, data: { items: quickAccessItems } });
+        } else{
             onSave({ type: componentType, data: componentData });
         }
         onClose();
@@ -45,26 +50,36 @@ const ComponentSelector = ({ isOpen, onClose, onSave, taskToEdit }) => {
         setMenuLinks([...menuLinks, { name: '', url: '' }]);
     };
 
+    const handleQuickAccessChange = (index, e) => {
+        const { name, value } = e.target;
+        const updatedItems = quickAccessItems.map((item, i) => i === index ? { ...item, [name]: value } : item);
+        setQuickAccessItems(updatedItems);
+    };
+
+    const addQuickAccessItem = () => {
+        setQuickAccessItems([...quickAccessItems, { title: '', link: '' }]);
+    };
+
     const renderFields = () => {
         switch (componentType) {
             case 'Text':
                 return (
                     <div>
-                        <label>Text Data:</label>
+                        <label>Texto a mostrar:</label>
                         <input
                             type="text"
                             value={componentData.text || ''}
                             onChange={(e) => setComponentData({ ...componentData, text: e.target.value })}
-                            placeholder="Enter text"
+                            placeholder="Agregar texto"
                         />
                     </div>
                 );
             case 'Image':
                 return (
                     <div>
-                        <label>Image URL:</label>
+                        <label>URL de la imagen:</label>
                         <input type="file" onChange={handleFileChange} />
-                        <label>Alt Text:</label>
+                        <label>Alt de la imagen:</label>
                         <input
                             type="text"
                             value={componentData.alt || ''}
@@ -79,27 +94,77 @@ const ComponentSelector = ({ isOpen, onClose, onSave, taskToEdit }) => {
                         <h3>Menu Links</h3>
                         {menuLinks.map((link, index) => (
                             <div key={index}>
-                                <label>Link Name:</label>
+                                <label>Nombre del enlace:</label>
                                 <input
                                     type="text"
                                     name="name"
                                     value={link.name}
                                     onChange={(e) => handleMenuChange(index, e)}
-                                    placeholder="Enter link name"
+                                    placeholder="Nombre del enlace"
                                 />
-                                <label>Link URL:</label>
+                                <label>URL del enlace:</label>
                                 <input
                                     type="text"
                                     name="url"
                                     value={link.url}
                                     onChange={(e) => handleMenuChange(index, e)}
-                                    placeholder="Enter link URL"
+                                    placeholder="URL del enlace"
                                 />
                             </div>
                         ))}
-                        <button type="button" onClick={addMenuLink}>Add Another Link</button>
+                        <button type="button" onClick={addMenuLink}>Agregar otro enlace</button>
                     </div>
                 );
+            case 'Introduccion':
+                return (
+                    <div>
+                        <label>Titulo:</label>
+                        <input
+                            type="text"
+                            value={componentData.title || ''}
+                            onChange={(e) => setComponentData({ ...componentData, title: e.target.value })}
+                            placeholder="Enter title"
+                        />
+                        <label>Imagen:</label>
+                        <input
+                            type="file"
+                            onChange={handleFileChange}
+                        />
+                        <label>Texto:</label>
+                        <textarea
+                            value={componentData.text || ''}
+                            onChange={(e) => setComponentData({ ...componentData, text: e.target.value })}
+                            placeholder="Enter text"
+                        />
+                    </div>
+                )
+            case 'Bloques':
+                return (
+                    <div>
+                        <h3>Quick Access Items</h3>
+                        {quickAccessItems.map((item, index) => (
+                            <div key={index}>
+                                <label>Item Title:</label>
+                                <input
+                                    type="text"
+                                    name="title"
+                                    value={item.title}
+                                    onChange={(e) => handleQuickAccessChange(index, e)}
+                                    placeholder="Enter item title"
+                                />
+                                <label>Item Link:</label>
+                                <input
+                                    type="text"
+                                    name="link"
+                                    value={item.link}
+                                    onChange={(e) => handleQuickAccessChange(index, e)}
+                                    placeholder="Enter item link"
+                                />
+                            </div>
+                        ))}
+                        <button type="button" onClick={addQuickAccessItem}>Agregar otro bloque</button>
+                    </div>
+                )
             default:
                 return null;
         }
@@ -110,20 +175,22 @@ const ComponentSelector = ({ isOpen, onClose, onSave, taskToEdit }) => {
     return (
         <div className="modal">
             <div className="modal-content">
-                <h2>{taskToEdit ? 'Edit Component' : 'Select Component'}</h2>
+                <h2>{taskToEdit ? 'Editar componente' : 'Seleccionar componente'}</h2>
                 <div>
-                    <label>Component Type:</label>
+                    <label>Tipo de componente:</label>
                     <select value={componentType} onChange={(e) => setComponentType(e.target.value)}>
-                        <option value="">Select...</option>
+                        <option value="">Seleccionar...</option>
                         <option value="Text">Text</option>
                         <option value="Image">Image</option>
                         <option value="Menu">Menu</option>
+                        <option value="Introduccion">Introduccion</option>
+                        <option value="Bloques">Bloques</option>
                         {/* Add more component types as needed */}
                     </select>
                 </div>
                 {renderFields()}
-                <button onClick={handleSave}>{taskToEdit ? 'Save Changes' : 'Save'}</button>
-                <button onClick={onClose}>Cancel</button>
+                <button onClick={handleSave}>{taskToEdit ? 'Guardar Cambios' : 'Guardar'}</button>
+                <button onClick={onClose}>Cancelar</button>
             </div>
         </div>
     );

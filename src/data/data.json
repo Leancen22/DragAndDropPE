@@ -1,38 +1,4 @@
 {
-  "pages": [
-    "tete",
-    "tete2"
-  ],
-  "tasks": {
-    "tete": [
-      {
-        "groupName": "Column-1",
-        "tasks": [
-          {
-            "id": "Column-1-1",
-            "title": "Task 1",
-            "type": "Text",
-            "data": {
-              "text": "test"
-            }
-          }
-        ]
-      }
-    ],
-    "tete2": [
-      {
-        "groupName": "Column-1",
-        "tasks": [
-          {
-            "id": "Column-1-1",
-            "title": "Task 1",
-            "type": "Text",
-            "data": {
-              "text": "testo"
-            }
-          }
-        ]
-      }
-    ]
-  }
+  "pages": [],
+  "tasks": {}
 }
